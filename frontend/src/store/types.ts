@@ -55,7 +55,7 @@ export interface CommunityRecipe {
         title: string;
         description: string;
         image_url: string;
-        user_id: string;
+        user_id?: string;
     };
 }
 

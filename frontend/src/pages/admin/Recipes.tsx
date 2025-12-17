@@ -268,7 +268,7 @@ export default function Recipes() {
                                     <XAxis dataKey="name" tick={{ fontSize: 10 }} />
                                     <YAxis tick={{ fontSize: 10 }} />
                                     <Tooltip
-                                        formatter={(value: number, name: string) => [value, name]}
+                                        formatter={(value, name) => [value ?? 0, name ?? '']}
                                         labelFormatter={(label) => `Meal Type: ${label}`}
                                         contentStyle={{ fontSize: '12px', padding: '8px' }}
                                     />

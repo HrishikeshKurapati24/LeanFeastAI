@@ -1,27 +1,25 @@
-import { createSlice, createEntityAdapter, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter, type PayloadAction, type EntityState } from '@reduxjs/toolkit';
 import type { UserRecipe } from '../../types/profileTypes';
 
-const likedMealsAdapter = createEntityAdapter<UserRecipe>({
+const likedMealsAdapter = createEntityAdapter<UserRecipe, string>({
     selectId: (recipe) => recipe.id,
     sortComparer: (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
 });
 
-interface LikedMealsState {
-    entities: ReturnType<typeof likedMealsAdapter.getInitialState>['entities'];
-    ids: string[];
-    meta: {
-        currentPage: number;
-        pageSize: number;
-        hasMore: boolean;
-        loaded: boolean;
-        isLoading: boolean;
-        error: string | null;
-    };
+interface LikedMealsMeta {
+    currentPage: number;
+    pageSize: number;
+    hasMore: boolean;
+    loaded: boolean;
+    isLoading: boolean;
+    error: string | null;
 }
 
-const initialState: LikedMealsState = {
-    entities: likedMealsAdapter.getInitialState().entities,
-    ids: likedMealsAdapter.getInitialState().ids,
+interface LikedMealsState extends EntityState<UserRecipe, string> {
+    meta: LikedMealsMeta;
+}
+
+const initialState: LikedMealsState = likedMealsAdapter.getInitialState({
     meta: {
         currentPage: 0,
         pageSize: 20,
@@ -30,7 +28,7 @@ const initialState: LikedMealsState = {
         isLoading: false,
         error: null,
     },
-};
+});
 
 const likedMealsSlice = createSlice({
     name: 'likedMeals',
@@ -81,4 +79,5 @@ export const {
     clearLikedMeals,
 } = likedMealsSlice.actions;
 export default likedMealsSlice.reducer;
+
 

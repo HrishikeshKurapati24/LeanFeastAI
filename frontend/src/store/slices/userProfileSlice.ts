@@ -1,29 +1,27 @@
-import { createSlice, createEntityAdapter, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter, type PayloadAction, type EntityState } from '@reduxjs/toolkit';
 import type { Profile } from '../../types/profileTypes';
 
-const profileAdapter = createEntityAdapter<Profile>({
+const profileAdapter = createEntityAdapter<Profile, string>({
     selectId: (profile) => profile.user_id,
 });
 
-interface UserProfileState {
-    entities: ReturnType<typeof profileAdapter.getInitialState>['entities'];
-    ids: string[];
-    meta: {
-        loaded: boolean;
-        isLoading: boolean;
-        error: string | null;
-    };
+interface UserProfileMeta {
+    loaded: boolean;
+    isLoading: boolean;
+    error: string | null;
 }
 
-const initialState: UserProfileState = {
-    entities: profileAdapter.getInitialState().entities,
-    ids: profileAdapter.getInitialState().ids,
+interface UserProfileState extends EntityState<Profile, string> {
+    meta: UserProfileMeta;
+}
+
+const initialState: UserProfileState = profileAdapter.getInitialState({
     meta: {
         loaded: false,
         isLoading: false,
         error: null,
     },
-};
+});
 
 const userProfileSlice = createSlice({
     name: 'userProfile',
@@ -59,4 +57,5 @@ const userProfileSlice = createSlice({
 
 export const { setProfile, updateProfile, clearProfile, setLoading, setError } = userProfileSlice.actions;
 export default userProfileSlice.reducer;
+
 

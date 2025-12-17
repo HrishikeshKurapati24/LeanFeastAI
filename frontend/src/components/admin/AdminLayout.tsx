@@ -1,4 +1,4 @@
-import { ReactNode, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import AdminSidebar from './AdminSidebar';
 import AdminHeader from './AdminHeader';
@@ -10,7 +10,7 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children }: AdminLayoutProps) {
     const location = useLocation();
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    
+
     // Determine current page from pathname
     let currentPage: 'users' | 'recipes' | 'community' = 'users';
     if (location.pathname.includes('/recipes')) {
@@ -35,8 +35,8 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             )}
 
             {/* Left Sidebar */}
-            <AdminSidebar 
-                currentPage={currentPage} 
+            <AdminSidebar
+                currentPage={currentPage}
                 isOpen={sidebarOpen}
                 onClose={() => setSidebarOpen(false)}
             />

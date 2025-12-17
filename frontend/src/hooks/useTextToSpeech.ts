@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { convertFractionsToWords } from '../utils/fractionConverter';
 
 export interface UseTextToSpeechOptions {
+    autoPlay?: boolean;
     onComplete?: () => void;
     onError?: (error: Error) => void;
 }

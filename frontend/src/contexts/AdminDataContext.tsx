@@ -1,11 +1,8 @@
-import { createContext, useContext, useReducer, useCallback, ReactNode } from 'react';
+import { createContext, useContext, useReducer, useCallback, type ReactNode } from 'react';
 import {
     adminUserAnalytics,
     adminRecipeAnalytics,
     adminCommunityAnalytics,
-    adminListUsers,
-    adminListRecipes,
-    adminListCommunity,
 } from '../utils/adminApi';
 
 interface User {

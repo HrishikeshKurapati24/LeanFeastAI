@@ -390,7 +390,7 @@ export default function Users() {
                                             <XAxis dataKey="name" tick={{ fontSize: 10 }} />
                                             <YAxis tick={{ fontSize: 10 }} allowDecimals={false} />
                                             <Tooltip
-                                                formatter={(value: number, name: string) => [value, name]}
+                                                formatter={(value, name) => [value ?? 0, name ?? '']}
                                                 contentStyle={{ fontSize: '12px', padding: '8px' }}
                                             />
                                             <Bar dataKey="value" radius={[4, 4, 0, 0]}>

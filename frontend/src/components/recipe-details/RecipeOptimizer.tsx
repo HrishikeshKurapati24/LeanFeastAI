@@ -89,6 +89,7 @@ export default function RecipeOptimizer({
 
     return (
         <CollapsibleSection
+            id="optimize-recipe"
             title="Optimize Recipe"
             icon="✨"
             isOpen={isOpen}

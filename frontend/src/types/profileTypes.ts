@@ -49,6 +49,7 @@ export interface UserActivity {
     recipe_id?: string;
     recipe_title?: string;
     timestamp: string;
+    action_timestamp?: string | null;
     metadata?: Record<string, any>;
 }
 

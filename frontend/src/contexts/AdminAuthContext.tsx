@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect, useState, ReactNode, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createContext, useContext, useEffect, useState, type ReactNode, useCallback } from 'react';
 import { useAuth } from './AuthContext';
 import { checkAdminStatus } from '../utils/adminAuth';
 import { useAppDispatch } from '../store/hooks';
@@ -23,7 +22,6 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
     const [assignedSections, setAssignedSections] = useState<string[]>([]);
     const [permissions, setPermissions] = useState<Record<string, boolean>>({});
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
 
     const checkAdmin = useCallback(async () => {
         if (!user) {
@@ -40,7 +38,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
         try {
             setLoading(true);
             const adminStatus = await checkAdminStatus();
-            
+
             setIsAdmin(adminStatus.isAdmin);
             const sections = adminStatus.assignedSections || [];
             const perms = adminStatus.permissions || {};
@@ -51,7 +49,7 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
             } else {
                 clearSessionMode();
             }
-            
+
             // Don't redirect here - let AdminRoute handle it
         } catch (error) {
             console.error('[DEBUG] AdminAuthContext: Error checking admin status:', error);

@@ -56,20 +56,20 @@ export const checkAdminStatus = async (): Promise<{ isAdmin: boolean; assignedSe
 
         const token = session?.access_token || await getAuthToken();
         const backendUrl = getBackendUrl();
-        
+
         // Use lightweight admin status check endpoint
         const response = await fetch(`${backendUrl}/api/admin/check-status`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
             },
         });
-        
+
         if (!response.ok) {
             return { isAdmin: false, assignedSections: [], permissions: {} };
         }
-        
+
         const data = await response.json();
-        
+
         // Handle assigned_sections - ensure it's always an array
         let assignedSections: string[] = [];
         if (data.assigned_sections) {
@@ -86,10 +86,10 @@ export const checkAdminStatus = async (): Promise<{ isAdmin: boolean; assignedSe
                 }
             }
         }
-        
+
         // Extract permissions
         const permissions = data.permissions || {};
-        
+
         const result = {
             isAdmin: data.is_admin === true,
             assignedSections: assignedSections,
@@ -116,11 +116,11 @@ export const checkAdminStatus = async (): Promise<{ isAdmin: boolean; assignedSe
 export const getAdminUser = async () => {
     try {
         const adminStatus = await checkAdminStatus();
-        
+
         if (!adminStatus.isAdmin) {
             return null;
         }
-        
+
         const { data: { user } } = await supabase.auth.getUser();
         return {
             ...user,

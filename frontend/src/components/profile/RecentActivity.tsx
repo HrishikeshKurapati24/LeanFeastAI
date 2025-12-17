@@ -5,7 +5,8 @@ interface Activity {
     action_type: string;
     recipe_id?: string;
     recipe_title?: string;
-    action_timestamp: string | null | undefined;
+    action_timestamp?: string | null | undefined;
+    timestamp?: string;
     metadata?: Record<string, any>;
 }
 

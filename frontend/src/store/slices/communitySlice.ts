@@ -1,7 +1,7 @@
-import { createSlice, createEntityAdapter, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter, type PayloadAction, type EntityState } from '@reduxjs/toolkit';
 import type { CommunityRecipe } from '../../utils/communityApi';
 
-const communityAdapter = createEntityAdapter<CommunityRecipe>({
+const communityAdapter = createEntityAdapter<CommunityRecipe, string>({
     selectId: (recipe) => recipe.id,
     sortComparer: (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
 });
@@ -15,22 +15,22 @@ interface Comment {
     created_at: string;
 }
 
-interface CommunityState {
-    entities: ReturnType<typeof communityAdapter.getInitialState>['entities'];
-    ids: string[];
-    meta: {
-        currentPage: number;
-        pageSize: number;
-        hasMore: boolean;
-        loaded: boolean;
-        isLoading: boolean;
-        error: string | null;
-        sort: 'newest' | 'trending' | 'popular';
-        filters: {
-            tags?: string[];
-            search?: string;
-        };
+interface CommunityMeta {
+    currentPage: number;
+    pageSize: number;
+    hasMore: boolean;
+    loaded: boolean;
+    isLoading: boolean;
+    error: string | null;
+    sort: 'newest' | 'trending' | 'popular';
+    filters: {
+        tags?: string[];
+        search?: string;
     };
+}
+
+interface CommunityState extends EntityState<CommunityRecipe, string> {
+    meta: CommunityMeta;
     comments: {
         [recipeId: string]: {
             comments: Comment[];
@@ -41,9 +41,7 @@ interface CommunityState {
     };
 }
 
-const initialState: CommunityState = {
-    entities: communityAdapter.getInitialState().entities,
-    ids: communityAdapter.getInitialState().ids,
+const initialState: CommunityState = communityAdapter.getInitialState({
     meta: {
         currentPage: 0,
         pageSize: 20,
@@ -51,11 +49,11 @@ const initialState: CommunityState = {
         loaded: false,
         isLoading: false,
         error: null,
-        sort: 'newest',
+        sort: 'newest' as const,
         filters: {},
     },
     comments: {},
-};
+});
 
 const communitySlice = createSlice({
     name: 'community',

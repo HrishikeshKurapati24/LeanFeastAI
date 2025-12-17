@@ -25,11 +25,11 @@ function IngredientsList({ ingredients }: IngredientsListProps) {
         });
     };
 
-    const formatIngredient = (ing: string | { name: string; quantity?: string; unit?: string }, index: number): string => {
+    const formatIngredient = (ing: string | { name: string; quantity?: string; unit?: string }): string => {
         if (typeof ing === 'string') {
             return ing;
         }
-        const parts = [];
+        const parts: string[] = [];
         if (ing.quantity) parts.push(ing.quantity);
         if (ing.unit) parts.push(ing.unit);
         if (ing.name) parts.push(ing.name);
@@ -75,8 +75,8 @@ function IngredientsList({ ingredients }: IngredientsListProps) {
                     <div className="space-y-1.5 sm:space-y-2">
                         {ingredients.map((ing, index) => {
                             const isChecked = checkedIngredients.has(index);
-                            const ingredientText = formatIngredient(ing, index);
-                            
+                            const ingredientText = formatIngredient(ing);
+
                             return (
                                 <label
                                     key={index}
@@ -89,9 +89,8 @@ function IngredientsList({ ingredients }: IngredientsListProps) {
                                         className="mt-1 w-4 h-4 sm:w-4 sm:h-4 md:w-5 md:h-5 rounded border-2 border-primary/30 text-primary focus:ring-2 focus:ring-primary/20 cursor-pointer"
                                     />
                                     <span
-                                        className={`text-neutral-61 text-xs sm:text-sm flex-1 ${
-                                            isChecked ? 'line-through text-neutral-75' : ''
-                                        }`}
+                                        className={`text-neutral-61 text-xs sm:text-sm flex-1 ${isChecked ? 'line-through text-neutral-75' : ''
+                                            }`}
                                     >
                                         {ingredientText}
                                     </span>

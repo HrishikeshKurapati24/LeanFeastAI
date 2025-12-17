@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useAdminAuth } from '../../contexts/AdminAuthContext';
 
@@ -27,18 +27,18 @@ export default function SectionProtectedRoute({ children, requiredSection }: Sec
 
     // Check if user has access to this section
     const hasAccess = Array.isArray(assignedSections) && assignedSections.includes(requiredSection);
-    
+
     if (!hasAccess) {
         // Redirect to first available section
         const sectionOrder = ['users', 'recipes', 'community'];
-        const firstAvailableSection = sectionOrder.find(section => 
+        const firstAvailableSection = sectionOrder.find(section =>
             assignedSections.includes(section)
         );
-        
+
         if (firstAvailableSection) {
             return <Navigate to={`/admin/${firstAvailableSection}`} replace />;
         }
-        
+
         // If no sections available, show a message
         return (
             <div className="min-h-screen flex items-center justify-center"

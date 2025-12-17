@@ -1,27 +1,25 @@
-import { createSlice, createEntityAdapter, type PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter, type PayloadAction, type EntityState } from '@reduxjs/toolkit';
 import type { UserRecipe } from '../../types/profileTypes';
 
-const recentMealsAdapter = createEntityAdapter<UserRecipe>({
+const recentMealsAdapter = createEntityAdapter<UserRecipe, string>({
     selectId: (recipe) => recipe.id,
     sortComparer: (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
 });
 
-interface RecentMealsState {
-    entities: ReturnType<typeof recentMealsAdapter.getInitialState>['entities'];
-    ids: string[];
-    meta: {
-        currentPage: number;
-        pageSize: number;
-        hasMore: boolean;
-        loaded: boolean;
-        isLoading: boolean;
-        error: string | null;
-    };
+interface RecentMealsMeta {
+    currentPage: number;
+    pageSize: number;
+    hasMore: boolean;
+    loaded: boolean;
+    isLoading: boolean;
+    error: string | null;
 }
 
-const initialState: RecentMealsState = {
-    entities: recentMealsAdapter.getInitialState().entities,
-    ids: recentMealsAdapter.getInitialState().ids,
+interface RecentMealsState extends EntityState<UserRecipe, string> {
+    meta: RecentMealsMeta;
+}
+
+const initialState: RecentMealsState = recentMealsAdapter.getInitialState({
     meta: {
         currentPage: 0,
         pageSize: 20,
@@ -30,7 +28,7 @@ const initialState: RecentMealsState = {
         isLoading: false,
         error: null,
     },
-};
+});
 
 const recentMealsSlice = createSlice({
     name: 'recentMeals',
@@ -85,4 +83,5 @@ export const {
     clearRecentMeals,
 } = recentMealsSlice.actions;
 export default recentMealsSlice.reducer;
+
 

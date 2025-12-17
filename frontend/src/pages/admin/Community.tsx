@@ -39,6 +39,7 @@ interface CommunityRecipe {
         title: string;
         description: string;
         image_url: string;
+        user_id?: string;
     };
 }
 
@@ -233,7 +234,7 @@ export default function Community() {
                 const isDeleted = recipe.posted_by?.startsWith('deleted_');
                 const status = isDeleted ? 'deleted' : (recipe.is_featured ? 'featured' : 'active');
                 const label = isDeleted ? 'Deleted' : (recipe.is_featured ? 'Featured' : 'Active');
-                
+
                 return (
                     <StatusBadge
                         status={status}
@@ -304,7 +305,7 @@ export default function Community() {
                                     <XAxis dataKey="name" tick={{ fontSize: 10 }} />
                                     <YAxis tick={{ fontSize: 10 }} />
                                     <Tooltip
-                                        formatter={(value: number, name: string) => [value, name]}
+                                        formatter={(value, name) => [value ?? 0, name ?? '']}
                                         labelFormatter={(label) => `Metric: ${label}`}
                                         contentStyle={{ fontSize: '12px', padding: '8px' }}
                                     />
@@ -431,11 +432,10 @@ export default function Community() {
                                                 }}
                                                 title="View comments"
                                                 disabled={isDeleted}
-                                                className={`w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-lg transition-colors ${
-                                                    isDeleted 
-                                                        ? 'text-gray-400 cursor-not-allowed opacity-50' 
-                                                        : 'text-blue-600 hover:bg-blue-50'
-                                                }`}
+                                                className={`w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-lg transition-colors ${isDeleted
+                                                    ? 'text-gray-400 cursor-not-allowed opacity-50'
+                                                    : 'text-blue-600 hover:bg-blue-50'
+                                                    }`}
                                             >
                                                 <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -450,11 +450,10 @@ export default function Community() {
                                                 }}
                                                 title={isDeleted ? 'Actions disabled for deleted recipes' : (recipe.is_featured ? 'Unfeature recipe' : 'Feature recipe')}
                                                 disabled={isDeleted}
-                                                className={`w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-lg transition-colors ${
-                                                    isDeleted 
-                                                        ? 'text-gray-400 cursor-not-allowed opacity-50' 
-                                                        : 'text-purple-600 hover:bg-purple-50'
-                                                }`}
+                                                className={`w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-lg transition-colors ${isDeleted
+                                                    ? 'text-gray-400 cursor-not-allowed opacity-50'
+                                                    : 'text-purple-600 hover:bg-purple-50'
+                                                    }`}
                                             >
                                                 {recipe.is_featured ? (
                                                     <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -476,11 +475,10 @@ export default function Community() {
                                                 }}
                                                 title={isDeleted ? 'Actions disabled for deleted recipes' : 'Remove from community'}
                                                 disabled={isDeleted}
-                                                className={`w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-lg transition-colors ${
-                                                    isDeleted 
-                                                        ? 'text-gray-400 cursor-not-allowed opacity-50' 
-                                                        : 'text-red-600 hover:bg-red-50'
-                                                }`}
+                                                className={`w-7 h-7 md:w-8 md:h-8 flex items-center justify-center rounded-lg transition-colors ${isDeleted
+                                                    ? 'text-gray-400 cursor-not-allowed opacity-50'
+                                                    : 'text-red-600 hover:bg-red-50'
+                                                    }`}
                                             >
                                                 <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
