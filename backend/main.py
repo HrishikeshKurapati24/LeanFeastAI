@@ -32,7 +32,7 @@ app = FastAPI(
 # Add CORS middleware to allow frontend to communicate with backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # Vite dev server ports
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "https://lean-feast-ai.vercel.app"],  # Vite dev server ports & Production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
