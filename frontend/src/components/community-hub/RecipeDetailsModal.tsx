@@ -3,6 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { supabase } from "../../config/supabaseClient";
 import { useAppSelector } from "../../store/hooks";
 import { selectCommunityRecipes } from "../../store/selectors/userSelectors";
+import defaultRecipeImage from "../../assets/default-recipe.png";
 
 interface RecipeStep {
     text: string;
@@ -112,7 +113,7 @@ export default function RecipeDetailsModal({
                     const recipeData: Recipe = {
                         id: reduxRecipe.id,
                         title: reduxRecipe.title,
-                        image_url: reduxRecipe.image_url || "https://via.placeholder.com/800x400?text=Recipe",
+                        image_url: reduxRecipe.image_url || defaultRecipeImage,
                         description: reduxRecipe.description || "",
                         tags: reduxRecipe.tags || [],
                         prep_time: reduxRecipe.prep_time ?? 0,
@@ -361,11 +362,11 @@ export default function RecipeDetailsModal({
                     {/* Hero Image */}
                     <div className="relative h-24 sm:h-32 md:h-48 lg:h-64 xl:h-80 rounded-xl sm:rounded-2xl overflow-hidden mb-4 sm:mb-5 md:mb-6 bg-neutral-100 flex items-center justify-center">
                         <img
-                            src={recipe.image_url || "https://via.placeholder.com/800x400?text=Recipe"}
+                            src={recipe.image_url || defaultRecipeImage}
                             alt={recipe.title}
                             className="w-full h-full object-contain"
                             onError={(e) => {
-                                (e.target as HTMLImageElement).src = "https://via.placeholder.com/800x400?text=Recipe";
+                                (e.target as HTMLImageElement).src = defaultRecipeImage;
                             }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

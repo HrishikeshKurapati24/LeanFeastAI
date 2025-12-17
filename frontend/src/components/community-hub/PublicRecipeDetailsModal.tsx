@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import defaultRecipeImage from "../../assets/default-recipe.png";
 
 interface RecipeStep {
     text: string;
@@ -256,11 +257,11 @@ export default function PublicRecipeDetailsModal({
                     {/* Hero Image */}
                     <div className="relative h-40 sm:h-56 md:h-72 rounded-xl sm:rounded-2xl overflow-hidden mb-4 sm:mb-5 md:mb-6 bg-neutral-100 flex items-center justify-center">
                         <img
-                            src={recipe.image_url || "https://via.placeholder.com/800x400?text=Recipe"}
+                            src={recipe.image_url || defaultRecipeImage}
                             alt={recipe.title}
                             className="w-full h-full object-contain"
                             onError={(e) => {
-                                (e.target as HTMLImageElement).src = "https://via.placeholder.com/800x400?text=Recipe";
+                                (e.target as HTMLImageElement).src = defaultRecipeImage;
                             }}
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -379,10 +380,10 @@ export default function PublicRecipeDetailsModal({
                                                 : JSON.stringify(ingredient);
 
                                         return (
-                                                <label
-                                                    key={index}
-                                                    className="flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-lg hover:bg-neutral-50 cursor-pointer"
-                                                >
+                                            <label
+                                                key={index}
+                                                className="flex items-center gap-2 sm:gap-3 p-1.5 sm:p-2 rounded-lg hover:bg-neutral-50 cursor-pointer"
+                                            >
                                                 <input
                                                     type="checkbox"
                                                     checked={checkedIngredients.has(index)}

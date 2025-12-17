@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setComments } from "../../store/slices/communitySlice";
 import { supabase } from "../../config/supabaseClient";
+import defaultRecipeImage from "../../assets/default-recipe.png";
 
 interface Recipe {
     id: string;
@@ -261,11 +262,11 @@ const RecipeCard = ({
             {/* Hero Image Section */}
             <div className="relative h-12 sm:h-16 md:h-24 lg:h-32 xl:h-40 overflow-hidden">
                 <img
-                    src={recipe.image_url || "https://via.placeholder.com/400x300?text=Recipe"}
+                    src={recipe.image_url || defaultRecipeImage}
                     alt={recipe.title}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://via.placeholder.com/400x300?text=Recipe";
+                        (e.target as HTMLImageElement).src = defaultRecipeImage;
                     }}
                 />
                 {/* Gradient Overlay for Tags */}

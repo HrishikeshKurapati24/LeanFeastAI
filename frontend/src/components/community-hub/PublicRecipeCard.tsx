@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import defaultRecipeImage from "../../assets/default-recipe.png";
 
 interface Recipe {
     id: string;
@@ -55,11 +56,11 @@ const PublicRecipeCard = ({
             {/* Hero Image Section (48% height) */}
             <div className="relative h-24 sm:h-32 md:h-40 lg:h-48 overflow-hidden">
                 <img
-                    src={recipe.image_url || "https://via.placeholder.com/400x300?text=Recipe"}
+                    src={recipe.image_url || defaultRecipeImage}
                     alt={recipe.title}
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                        (e.target as HTMLImageElement).src = "https://via.placeholder.com/400x300?text=Recipe";
+                        (e.target as HTMLImageElement).src = defaultRecipeImage;
                     }}
                 />
                 {/* Gradient Overlay for Tags */}
