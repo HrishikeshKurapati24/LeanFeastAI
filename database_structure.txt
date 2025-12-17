@@ -1,0 +1,136 @@
+Supabase's Tables:
+recipes
+id UUID (PK)
+user_id UUID (FK → auth.users.id)
+title TEXT
+description TEXT
+meal_type TEXT
+serving_size INTEGER
+ingredients JSONB
+steps JSONB
+nutrition JSONB
+tags TEXT[]
+prep_time INTEGER
+cook_time INTEGER
+ai_context JSONB
+is_public BOOLEAN
+image_url TEXT
+created_at TIMESTAMP
+updated_at TIMESTAMP
+
+
+community
+id UUID (PK)
+recipe_id UUID (FK → recipes.id)
+posted_by UUID (FK → auth.users.id)
+likes INTEGER
+comments JSONB
+views INTEGER
+shares INTEGER
+is_featured BOOLEAN
+created_at TIMESTAMP
+updated_at TIMESTAMP
+
+
+admin_users
+id UUID (PK, FK → auth.users.id)
+full_name TEXT
+email TEXT
+role_level TEXT
+permissions JSONB
+assigned_sections TEXT[]
+last_login TIMESTAMP
+created_at TIMESTAMP
+updated_at TIMESTAMP
+
+admin_actions
+id BIGSERIAL (PK)
+admin_id UUID (FK → auth.users.id)
+action_type TEXT
+target_type TEXT
+target_id UUID
+reason TEXT
+metadata JSONB
+created_at TIMESTAMPTZ
+
+
+analytics_recipe_performance
+id BIGSERIAL (PK)
+recipe_id UUID (FK → recipes.id)
+views INTEGER
+likes INTEGER
+saves INTEGER
+shares INTEGER
+average_rating NUMERIC(3,2)
+comments_count INTEGER
+ai_generated BOOLEAN
+ai_model_used TEXT
+created_at TIMESTAMP
+updated_at TIMESTAMP
+
+
+feedback
+id BIGSERIAL (PK)
+user_id UUID (FK → auth.users.id)
+recipe_id UUID (FK → recipes.id)
+feedback_text TEXT
+rating INTEGER
+created_at TIMESTAMP
+
+auth.users
+	•	id
+	•	aud
+	•	role
+	•	email
+	•	encrypted_password
+	•	email_confirmed_at
+	•	invited_at
+	•	confirmation_sent_at
+	•	last_sign_in_at
+	•	app_metadata
+	•	user_metadata
+	•	created_at
+	•	updated_at
+
+⸻
+
+profiles
+	•	id
+	•	full_name
+	•	avatar_url
+	•	bio
+	•	dietary_preferences
+	•	goals
+	•	allergies
+	•	saved_recipes
+    •   liked_recipes
+	•	role
+	•	last_login
+	•	created_at
+	•	updated_at
+
+⸻
+
+analytics_user_activity
+id BIGSERIAL (PK)
+user_id UUID (FK → auth.users.id)
+action_type TEXT
+recipe_id UUID (FK → recipes.id)
+metadata JSONB
+timestamp TIMESTAMP
+device_type TEXT
+session_id TEXT
+location TEXT
+referrer TEXT
+
+user_recipe_actions
+id BIGSERIAL (PK)
+user_id UUID (FK → auth.users.id)
+action_type ('step-by-step', 'progress' 'optimize_recipe', 'like', 'save', 'view', 'create', 'share', 'comment', 'unlike', 'unsave')
+comment_text
+created_at
+metadata
+
+Supabase storage buckets for images:
+avatars -> profile avatar
+recipe-images -> recipe picture

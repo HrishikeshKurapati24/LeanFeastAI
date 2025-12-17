@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Modern Health-Focused Color Palette */
+  /* Primary Green - Main brand color */
+  --color-primary: #22c55e;
+  --color-primary-dark: #16a34a;
+  --color-primary-light: #4ade80;
+
+  /* Secondary Light Green - Background sections */
+  --color-secondary-light: #dcfce7;
+  --color-secondary-lighter: #f0fdf4;
+  --color-secondary-lightest: #f7fee7;
+
+  /* Warm Accent Colors - Coral, Turquoise, Orange for CTAs */
+  --color-accent: #ff7b5c;
+  --color-accent-dark: #ff5a5f;
+  --color-accent-light: #ff9d7c;
+  --color-accent-turquoise: #40e0d0;
+  --color-accent-coral: #ff7b5c;
+  --color-accent-orange: #ff9f43;
+
+  /* Neutral Grays */
+  --color-neutral-0: #000000;
+  --color-neutral-25: #1f2937;
+  --color-neutral-42: #374151;
+  --color-neutral-61: #4b5563;
+  --color-neutral-75: #6b7280;
+  --color-neutral-158: #9ca3af;
+  --color-neutral-189: #d1d5db;
+  --color-neutral-224: #e5e7eb;
+  --color-neutral-245: #f3f4f6;
+  --color-neutral-255: #ffffff;
+
+  /* Font Family */
+  --font-family-sans: 'Poppins', sans-serif;
+
+  /* Font Sizes */
+  --font-size-h1: 40px;
+  --font-size-h2: 32px;
+  --font-size-h3: 28px;
+  --font-size-p1: 24px;
+  --font-size-p2: 20px;
+  --font-size-p3: 18px;
+  --font-size-p4: 16px;
+  --font-size-p5: 14px;
+}
+
+/* Animation Keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+
+  from,
+  to {
+    border-color: transparent;
+  }
+
+  50% {
+    border-color: #22c55e;
+  }
+}
+
+@keyframes wave {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-10px) scale(1.05);
+  }
+}
+
+@keyframes drawCheck {
+  from {
+    stroke-dashoffset: 24;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Utility Classes */
+.fade-in-up {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.5s ease-out forwards;
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.pulse-animation {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Glassmorphism Effect */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Gradient Backgrounds */
+.gradient-primary {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+}
+
+.gradient-accent {
+  background: linear-gradient(135deg, #ff7b5c, #ff5a5f);
+  box-shadow: 0 4px 10px rgba(255, 90, 95, 0.3);
+}
+
+.make-feast-btn {
+  background: linear-gradient(135deg, #ff7b5c, #ff5a5f);
+  color: white;
+  border-radius: 9999px;
+  padding: 1rem 2.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(255, 90, 95, 0.3);
+  transition: all 0.2s ease;
+}
+
+.make-feast-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(255, 90, 95, 0.4);
+}
+
+.gradient-soft {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+}
+
+/* Scroll Animation Classes */
+.scroll-fade-in {
+  opacity: 0;
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.scroll-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hide scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Shake animation for timer */
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-4px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(4px);
+  }
+}
+
+/* Parallax Effects */
+.parallax-slow {
+  will-change: transform;
+  transition: transform 0.3s ease-out;
+}
+
+.parallax-medium {
+  will-change: transform;
+  transition: transform 0.2s ease-out;
+}
+
+.parallax-fast {
+  will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+/* Screen reader only class */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Base defaults to match Tailwind expectations */
+html,
+body,
+#root {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+}

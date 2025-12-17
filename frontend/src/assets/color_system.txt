@@ -1,0 +1,12 @@
+The system is organized into three main categories: Primary colors, Secondary colors, and a Black color scale.
+
+Primary Colors: This section features a single, dominant color, which is a deep, rich Green with the hex code #055012ff. This color is likely intended to be the main brand or accent color used across the project's interface.
+
+Secondary Colors: This group includes four colors. The first three are varying very light shades of Green/Mint, providing subtle, complementary hues. Their hex codes are #a2f8a9ff, #c5ffd2e4, and #d3f2c2ff.
+The fourth secondary color is a bright Red with the hex code #df3939ff. The repeated hex code suggests the red might be a highlight, alert, or action color.
+
+Black Color Scale: This is a comprehensive grayscale palette consisting of ten different shades, ranging from true black to pure white. The sequence is slightly mixed in the image's hex codes:
+
+Black/Dark Grays: #0000, #252525, #424242, #616161, #757575.
+
+Mid/Light Grays & White: #9E9E9E, #BDBDBD, #E0E0E0, #F5E5F5 (A very light off-white), and #FFFF.
