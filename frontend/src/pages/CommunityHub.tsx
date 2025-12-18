@@ -72,12 +72,14 @@ interface Recipe {
     }>;
 }
 
+import defaultRecipeImage from "../assets/default-recipe.png";
+
 // Helper function to transform backend recipe to frontend Recipe format
 const transformRecipe = (backendRecipe: CommunityRecipe): Recipe => {
     return {
         id: backendRecipe.id,
         title: backendRecipe.title,
-        image_url: backendRecipe.image_url || "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800",
+        image_url: backendRecipe.image_url || defaultRecipeImage,
         description: backendRecipe.description || "",
         tags: backendRecipe.tags || [],
         prep_time: backendRecipe.prep_time ?? 0,
