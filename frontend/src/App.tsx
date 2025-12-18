@@ -27,20 +27,27 @@ import { AdminAuthProvider, useAdminAuth } from './contexts/AdminAuthContext';
 import NonAdminRoute from './components/NonAdminRoute';
 import { useUserStoreRefresh } from './hooks/useUserStoreRefresh';
 
+import About from './pages/About';
+import Features from './pages/Features';
+import Contact from './pages/Contact';
+import Terms from './pages/Terms';
+import Privacy from './pages/Privacy';
+import Support from './pages/Support';
+
 // Component to redirect to first available admin section
 function AdminDefaultRedirect() {
   const { assignedSections } = useAdminAuth();
-  
+
   // Priority order: users, recipes, community
   const sectionOrder = ['users', 'recipes', 'community'];
-  const firstAvailableSection = sectionOrder.find(section => 
+  const firstAvailableSection = sectionOrder.find(section =>
     assignedSections.includes(section)
   );
-  
+
   if (firstAvailableSection) {
     return <Navigate to={`/admin/${firstAvailableSection}`} replace />;
   }
-  
+
   // If no sections available, show a message (shouldn't happen if admin check works)
   return (
     <div className="min-h-screen flex items-center justify-center"
@@ -57,7 +64,7 @@ function AdminDefaultRedirect() {
 
 function AppContent() {
   const location = useLocation();
-  
+
   // Background refresh hook
   useUserStoreRefresh();
 
@@ -75,6 +82,12 @@ function AppContent() {
     '/explore-community',
     '/profile',
     '/auth-callback',
+    '/about',
+    '/features',
+    '/contact',
+    '/terms',
+    '/privacy',
+    '/support',
     '/admin',
     '/admin/login',
     '/admin/users',
@@ -114,6 +127,14 @@ function AppContent() {
         <Route path='/recipe/:id' element={<NonAdminRoute><RecipePage /></NonAdminRoute>} />
         <Route path='/profile' element={<NonAdminRoute><Profile /></NonAdminRoute>} />
         <Route path='/auth-callback' element={<NonAdminRoute><AuthCallback /></NonAdminRoute>} />
+
+        {/* Footer Pages */}
+        <Route path='/about' element={<NonAdminRoute><About /></NonAdminRoute>} />
+        <Route path='/features' element={<NonAdminRoute><Features /></NonAdminRoute>} />
+        <Route path='/contact' element={<NonAdminRoute><Contact /></NonAdminRoute>} />
+        <Route path='/terms' element={<NonAdminRoute><Terms /></NonAdminRoute>} />
+        <Route path='/privacy' element={<NonAdminRoute><Privacy /></NonAdminRoute>} />
+        <Route path='/support' element={<NonAdminRoute><Support /></NonAdminRoute>} />
 
         {/* Admin Routes */}
         <Route path='/admin/login' element={<AdminLogin />} />
