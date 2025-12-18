@@ -22,13 +22,8 @@ langchain-google-genai>=0.0.6
 langchain-text-splitters>=0.0.2
 langsmith>=0.1.147
 
-sentence-transformers>=3.0.0
-transformers>=4.30.0
-torch>=2.0.0
-tokenizers>=0.13.0
-numpy>=1.24.0
-scipy>=1.10.0
-scikit-learn>=1.2.0
+
+
 
 google-generativeai==0.3.2
 google-ai-generativelanguage==0.4.0

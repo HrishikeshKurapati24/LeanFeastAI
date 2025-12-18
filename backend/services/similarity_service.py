@@ -299,17 +299,18 @@ class SimilarityService:
             embedding = encode_text(recipe_text)
             
             # Prepare metadata (store all recipe fields)
+            # Pinecone metadata values cannot be None, must be string, number, boolean, or list of strings
             metadata = {
                 "id": recipe_id,
-                "title": recipe.get("title", ""),
-                "description": recipe.get("description", ""),
-                "ingredients": recipe.get("ingredients", []),
-                "steps": recipe.get("steps", []),
-                "tags": recipe.get("tags", []),
-                "meal_type": recipe.get("meal_type", "Dinner"),
-                "prep_time": recipe.get("prep_time"),
-                "cook_time": recipe.get("cook_time"),
-                "serving_size": recipe.get("serving_size", 1),
+                "title": recipe.get("title") or "",
+                "description": recipe.get("description") or "",
+                "ingredients": recipe.get("ingredients") or [],
+                "steps": recipe.get("steps") or [],
+                "tags": recipe.get("tags") or [],
+                "meal_type": recipe.get("meal_type") or "Dinner",
+                "prep_time": recipe.get("prep_time") or 0,
+                "cook_time": recipe.get("cook_time") or 0,
+                "serving_size": recipe.get("serving_size") or 1,
             }
             
             # Upsert to Pinecone with retry logic
@@ -337,13 +338,14 @@ class SimilarityService:
             import traceback
             traceback.print_exc()
     
-    def index_recipes_batch(self, recipes: List[Dict[str, Any]], batch_size: int = 100) -> None:
+    def index_recipes_batch(self, recipes: List[Dict[str, Any]], batch_size: int = 100, force_reindex: bool = False) -> None:
         """
         Index multiple recipes to Pinecone in batches
         
         Args:
             recipes: List of recipe dictionaries
             batch_size: Number of recipes to index per batch (default 100)
+            force_reindex: If True, overwrite existing recipes
         """
         if not self.index:
             print("Pinecone index not available, cannot index recipes")
@@ -374,7 +376,9 @@ class SimilarityService:
                         batch_recipe_ids.append(recipe_id)
                 
                 # Batch check which recipes already exist (more efficient)
-                existing_ids = self.recipes_exist_in_pinecone(batch_recipe_ids) if batch_recipe_ids else set()
+                existing_ids = set()
+                if not force_reindex:
+                    existing_ids = self.recipes_exist_in_pinecone(batch_recipe_ids) if batch_recipe_ids else set()
                 
                 for recipe in batch:
                     recipe_id = recipe.get("id")
@@ -391,17 +395,18 @@ class SimilarityService:
                     recipe_texts.append(recipe_text)
                     
                     # Prepare metadata
+                    # Pinecone metadata values cannot be None
                     metadata = {
                         "id": recipe_id,
-                        "title": recipe.get("title", ""),
-                        "description": recipe.get("description", ""),
-                        "ingredients": recipe.get("ingredients", []),
-                        "steps": recipe.get("steps", []),
-                        "tags": recipe.get("tags", []),
-                        "meal_type": recipe.get("meal_type", "Dinner"),
-                        "prep_time": recipe.get("prep_time"),
-                        "cook_time": recipe.get("cook_time"),
-                        "serving_size": recipe.get("serving_size", 1),
+                        "title": recipe.get("title") or "",
+                        "description": recipe.get("description") or "",
+                        "ingredients": recipe.get("ingredients") or [],
+                        "steps": recipe.get("steps") or [],
+                        "tags": recipe.get("tags") or [],
+                        "meal_type": recipe.get("meal_type") or "Dinner",
+                        "prep_time": recipe.get("prep_time") or 0,
+                        "cook_time": recipe.get("cook_time") or 0,
+                        "serving_size": recipe.get("serving_size") or 1,
                     }
                     
                     vectors_to_upsert.append({
@@ -442,13 +447,14 @@ class SimilarityService:
         
         print(f"Batch indexing complete: {total_indexed} indexed, {total_skipped} skipped")
     
-    def migrate_all_recipes_from_supabase(self, db_service: DatabaseService) -> None:
+    def migrate_all_recipes_from_supabase(self, db_service: DatabaseService, force_reindex: bool = False) -> None:
         """
         Fetch all recipes from Supabase and index them to Pinecone
         This is used for initial migration or re-indexing
         
         Args:
             db_service: DatabaseService instance to fetch recipes
+            force_reindex: If True, overwrite existing recipes
         """
         if not self.index:
             print("Pinecone index not available, cannot migrate recipes")
@@ -504,7 +510,7 @@ class SimilarityService:
                 formatted_recipes.append(formatted_recipe)
             
             # Index all recipes in batches
-            self.index_recipes_batch(formatted_recipes, batch_size=100)
+            self.index_recipes_batch(formatted_recipes, batch_size=100, force_reindex=force_reindex)
             
             print(f"Migration complete: {len(formatted_recipes)} recipes processed")
             

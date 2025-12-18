@@ -86,6 +86,26 @@ async def startup_event():
     
     print("[startup] Service initialization complete")
 
+    # Background migration is disabled after initial run
+    # To re-run, uncomment the lines below or trigger manually
+    # try:
+    #     print("[startup] Triggering background recipe re-indexing...")
+    #     asyncio.create_task(run_migration_task())
+    # except Exception as e:
+    #     print(f"[startup] Failed to trigger background migration: {str(e)}")
+
+# async def run_migration_task():
+#     """Helper to run migration in background"""
+#     try:
+#         print("[migration] Starting background re-indexing...")
+#         # Add small delay to let server start up fully
+#         await asyncio.sleep(5) 
+#         # Force re-index to update old vectors with new model
+#         await asyncio.to_thread(similarity_service.migrate_all_recipes_from_supabase, db_service, force_reindex=True)
+#         print("[migration] Background re-indexing complete")
+#     except Exception as e:
+#         print(f"[migration] Background re-indexing failed: {str(e)}")
+
 @app.get('/')
 async def root():
     """

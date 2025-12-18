@@ -3,10 +3,9 @@ Vector store service for Pinecone integration
 Handles Pinecone client initialization, index management, and embeddings
 """
 import os
-from typing import Optional, List
+from typing import Optional, List, Any
 from pinecone import Pinecone, ServerlessSpec
 from pinecone import Index
-from sentence_transformers import SentenceTransformer
 
 # Pinecone configuration
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
@@ -17,10 +16,6 @@ METRIC = "cosine"
 # Global Pinecone client instance
 _pinecone_client: Optional[Pinecone] = None
 _index: Optional[Index] = None
-
-# Global embedding model instance
-_embedding_model: Optional[SentenceTransformer] = None
-EMBEDDING_MODEL_NAME = "sentence-transformers/all-mpnet-base-v2"
 
 
 def get_pinecone_client() -> Pinecone:
@@ -93,24 +88,36 @@ def get_pinecone_index() -> Index:
     return _index
 
 
-def get_embedding_model() -> SentenceTransformer:
+# Global embedding model instance
+_embedding_model: Optional[Any] = None
+EMBEDDING_MODEL_NAME = "models/text-embedding-004"
+
+
+def get_embedding_model():
     """
-    Load and return the embedding model instance (singleton)
-    Uses all-mpnet-base-v2 which produces 768-dimensional embeddings
+    Load and return the Google Gemini embedding model instance (singleton)
+    Uses models/text-embedding-004 which produces 768-dimensional embeddings
     
     Returns:
-        SentenceTransformer model instance
-        
-    Raises:
-        Exception: If model loading fails
+        GoogleGenerativeAIEmbeddings model instance
     """
     global _embedding_model
     
     if _embedding_model is None:
         try:
             print(f"Loading embedding model: {EMBEDDING_MODEL_NAME}")
-            _embedding_model = SentenceTransformer(EMBEDDING_MODEL_NAME)
-            print(f"Embedding model loaded successfully")
+            from langchain_google_genai import GoogleGenerativeAIEmbeddings
+            
+            api_key = os.getenv("GEMINI_API_KEY")
+            if not api_key:
+                raise ValueError("GEMINI_API_KEY environment variable is required for embeddings")
+                
+            _embedding_model = GoogleGenerativeAIEmbeddings(
+                model=EMBEDDING_MODEL_NAME,
+                google_api_key=api_key,
+                task_type="retrieval_document"
+            )
+            print(f"Embedding model loaded successfully (Google Gemini)")
         except Exception as e:
             print(f"Error loading embedding model: {str(e)}")
             raise
@@ -120,21 +127,18 @@ def get_embedding_model() -> SentenceTransformer:
 
 def encode_text(text: str) -> List[float]:
     """
-    Generate embedding for a single text string
+    Generate embedding for a single text string using Gemini API
     
     Args:
         text: Text to encode
         
     Returns:
         List of floats representing the embedding vector (768 dimensions)
-        
-    Raises:
-        Exception: If encoding fails
     """
     model = get_embedding_model()
     try:
-        embedding = model.encode(text, convert_to_numpy=True, normalize_embeddings=True)
-        return embedding.tolist()
+        # Use embed_query for single text
+        return model.embed_query(text)
     except Exception as e:
         print(f"Error encoding text: {str(e)}")
         raise
@@ -142,21 +146,18 @@ def encode_text(text: str) -> List[float]:
 
 def encode_texts(texts: List[str]) -> List[List[float]]:
     """
-    Generate embeddings for multiple text strings (batch encoding)
+    Generate embeddings for multiple text strings (batch encoding) using Gemini API
     
     Args:
         texts: List of texts to encode
         
     Returns:
         List of embedding vectors (each is a list of 768 floats)
-        
-    Raises:
-        Exception: If encoding fails
     """
     model = get_embedding_model()
     try:
-        embeddings = model.encode(texts, convert_to_numpy=True, normalize_embeddings=True, show_progress_bar=False)
-        return embeddings.tolist()
+        # Use embed_documents for batch texts
+        return model.embed_documents(texts)
     except Exception as e:
         print(f"Error encoding texts: {str(e)}")
         raise
